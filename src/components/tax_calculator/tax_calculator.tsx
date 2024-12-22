@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function TaxCalculator() {
     const [income, setIncome] = useState(0);
@@ -34,8 +34,12 @@ export function TaxCalculator() {
         setTax(calculatedTax);
     };
 
+    useEffect(() => {
+        handleCalculate();
+    }, [income, salaryType]);
+
     return (
-        <div className="font-sans p-8">
+        <div className="font-sans sm:min-w-[400px] sm:max-w-[400px]">
             <h1 className="text-2xl font-bold mb-4">Simple Tax Calculator</h1>
             <div className="mb-4">
                 <label htmlFor="income" className="block mb-2 font-medium">Enter your income:</label>
@@ -61,13 +65,17 @@ export function TaxCalculator() {
             </div>
             <button
                 onClick={handleCalculate}
-                className="px-4 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
+                className="px-4 py-2 mt-6 w-full bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
             >
                 Calculate Tax
             </button>
-            {tax !== 0 && (
+            {tax !== 0 ? (
                 <div className="mt-4">
-                    <h2 className="text-xl font-semibold">Your Tax: {tax.toFixed(2)} PKR</h2>
+                    <h2 className="text-xl font-semibold">Your Tax: {tax?.toLocaleString()} PKR</h2>
+                </div>
+            ) : (
+                <div className="mt-4">
+                    <h3 className='text-lg font-thin'>Your Annual Income should be above than 6 lac to calculate tax</h3>
                 </div>
             )}
         </div>
